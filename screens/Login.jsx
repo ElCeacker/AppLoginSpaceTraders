@@ -3,15 +3,23 @@ import { Button, Text, TextInput, View } from "react-native"
 import { StyleSheet } from 'react-native';
 
 import Toast from 'react-native-root-toast';
+import { getUserProfile } from "../services/SpaceTraders";
 
 const Login = ({userToken, setUserToken}) => {
 
     const [textToken, setTextToken] = useState('');
 
-    const tokenHandler = () => {
+    const tokenHandler = async () => {
         if (textToken !== '') {
-            setUserToken(textToken)
-            console.log('Mama estoy en la app: ', textToken);
+            const userData = await getUserProfile(textToken)
+            if ('user' in userData) {
+                setUserToken(textToken)
+                return
+            } 
+
+            Toast.show(userData.error.message, {
+                duration: Toast.durations.LONG
+            })
 
         } else {
             Toast.show('Introduzca un Token para continuar', {
