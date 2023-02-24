@@ -1,34 +1,30 @@
-import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native"
+import { Button, Text, TextInput, View, Image } from "react-native"
+import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { getServerState } from '../services/SpaceTraders';
 
-import Toast from 'react-native-root-toast';
-
-const Home = ({onLogin}) => {
-    const [userToken,setUserToken] = useState('');
-
-    const tokenHandler = () => {
-        if (userToken !== '') {
-            onLogin(userToken)
-        } else {
-            Toast.show('Introduzca un Token para continuar', {
-                duration: Toast.durations.LONG
-            })
+const Home = () => {
+    const [state, setState] = useState({ status: '' });
+    useEffect(() => {
+        const fetchStateServer = async () => {
+            const state = await getServerState();
+            setState(state)
         }
+        fetchStateServer()
+    }, [])
+    
+    function estado() {
+        return (
+            <View style={{flex: 1}}>
+                <View style={[styles.edit, styles.container]}>
+                    <Text>Este es el HOME</Text>
+                </View>
+            </View>
+        );
     }
 
     return (
-        <View style={{flex:1}}>
-            <View style={styles.container}>
-                <Text>Login: </Text>
-                <Text>Su token es: {userToken}</Text>
-                <TextInput
-                    onChangeText={setUserToken} 
-                    value={userToken} 
-                    placeholder='Introduzca token'/>
-                    <Button title='Login' onPress={tokenHandler} />
-            </View>
-        </View>
+        estado()
     )
 }
 
@@ -40,14 +36,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'flex-end'
     },
-    button: {
-        marginBottom: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
-        height: 40,
-        width: 80,
-        backgroundColor: 'lightgreen',
+    edit: {
+        flexDirection: 'column',
+        alignContent: 'center',
+        justifyContent: 'space-between'
+    },
+    image: {
+        width: 50,
+        height: 50
     },
 })
 

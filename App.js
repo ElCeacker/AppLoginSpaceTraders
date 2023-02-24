@@ -4,35 +4,29 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import { useEffect, useState } from 'react';
+import { claimLoan } from './services/SpaceTraders' 
 
 import * as SecureStore from 'expo-secure-store';
+import Login from './screens/Login';
 import Home from './screens/Home';
-import ServerStatus from './screens/ServerStatus';
 import Profile from './screens/Profile';
-
+import Register from './screens/Register';
 const Drawer = createDrawerNavigator();
 const STORE_TOKEN_KEY = 'mytoken'
 
 export default function App() {
 
-  useEffect(() => {
-    const retrieveStoreToken = async () => {
-      const storeToken = await getValueFor(STORE_TOKEN_KEY)
-      setUserToken(storeToken)
-    }
-    retrieveStoreToken();
-  }, [userToken])
+  const handleAPi = async()=>{
+    const response =  await claimLoan("351cf3fe-da77-490f-9a6b-98ff5f17fd93", "STARTUP")
+    console.log({response})
+  }
+
+  useEffect(()=>{
+    handleAPi()
+  },[])
 
   const getValueFor = async(key) => {
     let result = await SecureStore.getItemAsync(key);
-  
-    // if (result) {
-    //   alert(`Tu valor es ${result}`)
-    //   return result
-    // } else {
-    //   alert('No existe esa key')
-    //   return ''
-    // }
   }
 
   const save = async (key, value) => {
@@ -41,36 +35,37 @@ export default function App() {
 
   const [userToken, setUserToken] = useState('')
 
-  const storeUserToken = (newToken) => {
-    console.log('Mama estoy en la app: ', newToken);
-    setUserToken(newToken);
-    save(STORE_TOKEN_KEY, newToken)
-    setUserToken(userToken)
-  }
 
-  const logOut = () => {
-    setUserToken('')
-  }
+
+  // const logOut = () => {
+  //   setUserToken('')
+  // }
 
   return (
     <RootSiblingParent>
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName='Home'>
+        <Drawer.Navigator initialRouteName='Login'>
           {
             userToken === ''
             ?
             <>
-              <Drawer.Screen name='Login Way'>
-                {() => <Home onLogin={storeUserToken} />}
+              <Drawer.Screen name='Login'>
+                {() => <Login userToken={userToken} setUserToken={setUserToken}/>}
+              </Drawer.Screen>
+              <Drawer.Screen name='Register'>
+                {() => <Register userToken={userToken} setUserToken={setUserToken}/>}
               </Drawer.Screen>
             </>
             :
             <>
-              <Drawer.Screen name='Server Status' component={ServerStatus} />
-
-              <Drawer.Screen name='Profile'> 
-                {() => <Profile logOut={logOut}/>}
+              <Drawer.Screen name='Space Traders'>
+                {() => <Profile userToken={userToken}/>}
               </Drawer.Screen>
+              <Drawer.Screen name='Home' component={Home} />
+
+              {/* <Drawer.Screen name='LogOut'> 
+                {() => <LogOut logOut={logOut}/>}
+              </Drawer.Screen> */}
             </>
           }
         </Drawer.Navigator>
