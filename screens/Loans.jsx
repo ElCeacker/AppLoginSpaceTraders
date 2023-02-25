@@ -21,7 +21,7 @@ const Loans = ({ userToken, setActive }) => {
         const data = await takeLoan(userToken, type);
         try {
             if (data.loan.status) {
-                Toast.show(`Loan '${data.loan.type}' take`, {
+                Toast.show(`Loan '${data.loan.type}' taked`, {
                     duration: Toast.durations.LONG
                 })
                 setActive(true)

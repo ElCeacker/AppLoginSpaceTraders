@@ -19,12 +19,12 @@ const Login = ({userToken, setUserToken, save}) => {
                 return
             } 
 
-            Toast.show(userData.error.message, {
+            Toast.show('This token does not exist', {
                 duration: Toast.durations.LONG
             })
 
         } else {
-            Toast.show('Introduzca un Token para continuar', {
+            Toast.show('Enter a Token to continue', {
                 duration: Toast.durations.LONG
             })
         }

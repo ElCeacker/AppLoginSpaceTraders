@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { claimLoan, getUser } from './services/SpaceTraders' 
 
 import Login from './screens/Login';
-import Home from './screens/Home';
 import Profile from './screens/Profile';
 import Register from './screens/Register';
 import Logout from './screens/Logout';
@@ -87,7 +86,7 @@ export default function App() {
             :
             <>
               <Drawer.Screen name='Profile'>
-                {() => <Profile userToken={userToken} userData={userData}/>}
+                {() => <Profile userToken={userToken} userData={userData} setUserData={setUserData}/>}
               </Drawer.Screen>
 
               <Drawer.Screen name='Loans'>

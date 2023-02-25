@@ -31,15 +31,15 @@ const Ships = ({ userToken }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Available Ships</Text>
+            <Text style={styles.header}>Available Ships</Text>
 
-            <FlatList data={ships.shipListings} renderItem={({ item, index }) => {
+            <FlatList data={ships.shipListings} renderItem={({ item, idx }) => {
                 return (
                     ships === ''
-                        ? <Text>No loans Available</Text>
-                        : <View style={styles.modal_structure}>
+                        ? <Text>there are no ships</Text>
+                        : <View style={styles.containerData}>
                             <View>
-                                <Image source={shipsImages[index]} style={styles.shipsimages} />
+                                <Image source={shipsImages[idx]} style={styles.shipsimages} />
                             </View>
                             <View>
                                 <Text>Type: {item.type}</Text>
@@ -50,39 +50,25 @@ const Ships = ({ userToken }) => {
                         </View>
                 )
             }} />
-
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        alignContent: 'flex-end'
     },
-    button: {
-        marginBottom: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
-        height: 40,
-        width: 80,
-        backgroundColor: 'lightgreen',
-    },
-    title: {
+    header: {
         fontSize: 30,
     },
-    modal_structure: {
+    containerData: {
         display: 'flex',
         flexDirection: 'row',
         borderColor: 'black',
         borderWidth: 1,
         width: 250,
         padding: 10,
-        height: 180,
-        borderRadius: 10,
+        height: 150,
         backgroundColor: '#fff',
         marginTop: 10,
         alignItems: 'center',

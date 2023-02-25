@@ -5,13 +5,13 @@ import { StyleSheet } from 'react-native';
 import { getUserProfile } from '../services/SpaceTraders'
 import Toast from "react-native-root-toast";
 
-const userData = ({userToken, userData}) => {
+const userData = ({userToken, userData, setUserData}) => {
 
     useEffect(() => {
         const fetchUserAccount = async () => {
-            const userProfile = await getUserProfile(userToken);
+            const userProfile = await getUser(userToken);
             if ('user' in userProfile) {
-                setProfile(userProfile)
+                setUserData(userProfile)
                 return 
             } 
 
