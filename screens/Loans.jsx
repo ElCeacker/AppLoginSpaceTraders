@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native"
 import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native'
+import Toast from "react-native-root-toast"
 import { getLoans } from "../services/SpaceTraders"
 
 
 const Loans = ({ userToken, setActive }) => {
     const [loans, setLoans] = useState('')
-    const navigaton = useNavigation()
+    const navigation = useNavigation()
 
     useEffect(() => {
         const availableLoans = async () => {
@@ -24,7 +25,7 @@ const Loans = ({ userToken, setActive }) => {
                     duration: Toast.durations.LONG
                 })
                 setActive(true)
-                navigaton.navigate('Profile')
+                navigation.navigate('Profile')
             }
         } catch (error) {
             Toast.show(`You can only take one loan`, {
@@ -38,7 +39,6 @@ const Loans = ({ userToken, setActive }) => {
             <Text style={styles.header}>Available Loans</Text>
 
             <FlatList data={loans.loans} renderItem={({ item }) => {
-                console.log(item);
                 return (
                     loans === ''
                         ? <Text>No loans Available</Text>

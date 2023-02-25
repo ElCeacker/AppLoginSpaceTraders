@@ -3,12 +3,23 @@ const endpoints = {
     serverState: `https://api.spacetraders.io/game/status`,
     createUser: `https://api.spacetraders.io/users/`,
     claimLoan: `https://api.spacetraders.io/my/loans?token=`,
-    aviableLoan: `https://api.spacetraders.io/types/loans?token=`
+    aviableLoan: `https://api.spacetraders.io/types/loans?token=`,
+    ships: `https://api.spacetraders.io/systems/OE/ship-listings?token=`
 }
 
 export const getUser = async (token) => {
     try {
         const response = await fetch(`${endpoints.userProfile}${token}`);
+        const data = await response.json();
+        return data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const getShips = async (token) => {
+    try {
+        const response = await fetch(`${endpoints.ships}${token}`);
         const data = await response.json();
         return data
     } catch (error) {

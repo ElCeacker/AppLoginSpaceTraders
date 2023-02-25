@@ -13,6 +13,7 @@ import Register from './screens/Register';
 import Logout from './screens/Logout';
 import Loans from './screens/Loans';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ships from './screens/Ships';
 
 const Drawer = createDrawerNavigator();
 const STORE_TOKEN_KEY = 'mytoken'
@@ -22,15 +23,6 @@ export default function App() {
   const [userData, setUserData] = useState({ user: { username: "", credits: "", shipCount: "", joinedAt: "" } });
   const [userToken, setUserToken] = useState('')
   const [active, setActive] = useState(false)
-  
-
-  // const handleAPi = async()=>{
-  //   const response =  await claimLoan("351cf3fe-da77-490f-9a6b-98ff5f17fd93", "STARTUP")
-  // }
-
-  // useEffect(()=>{
-  //   handleAPi()
-  // },[])
 
   const getValueFor = async(key) => {
     let result = await AsyncStorage.getItem(key);
@@ -69,7 +61,6 @@ export default function App() {
     if (userToken) {
       fetchUserAccount();
     }
-    console.log("token => ", userToken);
   }, [userToken, active])
 
   const logOut = () => {
@@ -101,6 +92,10 @@ export default function App() {
 
               <Drawer.Screen name='Loans'>
                 {() => <Loans userToken={userToken} setActive={setActive} />}
+              </Drawer.Screen>
+
+              <Drawer.Screen name='Ships'> 
+                {() => <Ships userToken={userToken}/>}
               </Drawer.Screen>
 
               <Drawer.Screen name='LogOut'> 
