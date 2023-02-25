@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, Text, TextInput, View, Image } from "react-native";
 import { StyleSheet } from "react-native";
 
 import Toast from "react-native-root-toast";
@@ -29,38 +29,37 @@ const Login = ({ userToken, setUserToken, save }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
+      <Image source={require('../assets/espacio.jpg')}/>
       <View style={styles.container}>
-        <Text>Login: </Text>
-        <Text>Su token es: {userToken}</Text>
-        <TextInput
-          value={textToken}
-          placeholder="Introduzca token"
-          onChangeText={(value) => setTextToken(value)}
-        />
-        <Button title="Login" onPress={tokenHandler} />
+        <View style={styles.container2}>
+          <Text>Login: </Text>
+          <TextInput
+            value={textToken}
+            placeholder="Enter your token"
+            onChangeText={(value) => setTextToken(value)}
+          />
+          <View style={{marginTop: 10}}>
+            <Button title="Login" onPress={tokenHandler}/>
+          </View>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    alignContent: "flex-end",
   },
-  button: {
-    marginBottom: 20,
-    justifyContent: "center",
-    alignItems: "center",
+  container2: {
+    borderWidth: 1,
+    padding: 10,
     borderRadius: 5,
-    height: 40,
-    width: 80,
-    backgroundColor: "lightgreen",
-  },
+    width: '90%'
+  } 
 });
 
 export default Login;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, Text, TextInput, View, Image } from "react-native";
 import { StyleSheet } from "react-native";
 
 import Toast from "react-native-root-toast";
@@ -27,17 +27,22 @@ const Register = ({ setUserToken }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
+      <Image source={require('../assets/espacio.jpg')}/>
       <View style={styles.container}>
-        <Text>Register: </Text>
-        <TextInput
-          value={userName}
-          placeholder="Coloque su nombre de usuario"
-          onChangeText={(value) => setUserName(value)}
-        />
-        <Button title="Register" onPress={registerHandler} />
+        <View style={styles.container2}>
+          <Text>Register: </Text>
+          <TextInput
+            value={userName}
+            placeholder="enter your username"
+            onChangeText={(value) => setUserName(value)}
+          />
+          <View style={{ marginTop: 10 }}>
+            <Button title="Register" onPress={registerHandler} />
+          </View>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -48,6 +53,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignContent: "flex-end",
+  },
+  container2: {
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
+    width: "90%",
   },
   button: {
     marginBottom: 20,
