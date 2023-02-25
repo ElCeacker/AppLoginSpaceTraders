@@ -11,10 +11,20 @@ import Login from './screens/Login';
 import Home from './screens/Home';
 import Profile from './screens/Profile';
 import Register from './screens/Register';
+import Logout from './screens/Logout';
+import Loans from './screens/Loans';
 const Drawer = createDrawerNavigator();
 const STORE_TOKEN_KEY = 'mytoken'
 
 export default function App() {
+
+  const [userToken, setUserToken] = useState('')
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    
+  }, [userToken])
+  
 
   const handleAPi = async()=>{
     const response =  await claimLoan("351cf3fe-da77-490f-9a6b-98ff5f17fd93", "STARTUP")
@@ -33,9 +43,6 @@ export default function App() {
     await SecureStore.setItemAsync(key, value);
   }
 
-  const [userToken, setUserToken] = useState('')
-
-
 
   // const logOut = () => {
   //   setUserToken('')
@@ -53,19 +60,22 @@ export default function App() {
                 {() => <Login userToken={userToken} setUserToken={setUserToken}/>}
               </Drawer.Screen>
               <Drawer.Screen name='Register'>
-                {() => <Register userToken={userToken} setUserToken={setUserToken}/>}
+                {() => <Register setUserToken={setUserToken}/>}
               </Drawer.Screen>
             </>
             :
             <>
-              <Drawer.Screen name='Space Traders'>
+              <Drawer.Screen name='Profile'>
                 {() => <Profile userToken={userToken}/>}
               </Drawer.Screen>
-              <Drawer.Screen name='Home' component={Home} />
 
-              {/* <Drawer.Screen name='LogOut'> 
-                {() => <LogOut logOut={logOut}/>}
-              </Drawer.Screen> */}
+              <Drawer.Screen name='Loans'>
+                {() => <Loans userToken={userToken} setActive={setActive} />}
+              </Drawer.Screen>
+
+              <Drawer.Screen name='LogOut'> 
+                {() => <Logout />}
+              </Drawer.Screen>
             </>
           }
         </Drawer.Navigator>

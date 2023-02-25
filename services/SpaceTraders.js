@@ -2,7 +2,8 @@ const endpoints = {
     userProfile: `https://api.spacetraders.io/my/account?token=`,
     serverState: `https://api.spacetraders.io/game/status`,
     createUser: `https://api.spacetraders.io/users/`,
-    claimLoan: `https://api.spacetraders.io/my/loans?token=`
+    claimLoan: `https://api.spacetraders.io/my/loans?token=`,
+    aviableLoan: `https://api.spacetraders.io/types/loans?token=`
 }
 
 export const getUserProfile = async (token) => {
@@ -36,40 +37,29 @@ export const createUser = async (user) => {
     }
 }
 
-
-
-export const claimLoan = async (token, type) => {
-
-    // pedir loans necesitas lo siguiente:
-    // el tipo
-    // el token 
-
-    // primero hagarramos un objeto y le metemos la propiedad type con el tipo dentro
-    let payload = {
-        type: type
-    } 
-
-    // segundo serializamos, a multipart o json en este caso JSON
-
-    payload = JSON.stringify(payload)
-
-    // tercero creamos los headers necesarios para enviar la solicitud en formato JSON
-    const headers = {
-        'Content-Type': 'application/json',
-        //'Authorization': 'Bearer ' + token
-    }
-
-    // cuarto paso seria hacer el request
+export const getLoans = async (token) => {
     try {
-        const response = await fetch(`${endpoints.claimLoan}${token}`, { 
-            method : 'POST', 
-            body: payload, 
-            headers: headers
-        });
+        const response = await fetch(`${endpoints.aviableLoan}${token}`);
         const data = await response.json();
         return data
     } catch (error) {
         console.error(error)
-        return null 
+    }
+}
+
+export const takeLoan = async (token, type) => {
+    try {
+        const data = await fetch(`https://api.spacetraders.io/my/loans?token=${token}&type=${type}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => response.json())
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        return data
+    } catch (error) {
+        console.error(error)
     }
 }
