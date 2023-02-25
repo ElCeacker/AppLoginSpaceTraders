@@ -4,49 +4,79 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import { useEffect, useState } from 'react';
-import { claimLoan } from './services/SpaceTraders' 
+import { claimLoan, getUser } from './services/SpaceTraders' 
 
-import * as SecureStore from 'expo-secure-store';
 import Login from './screens/Login';
 import Home from './screens/Home';
 import Profile from './screens/Profile';
 import Register from './screens/Register';
 import Logout from './screens/Logout';
 import Loans from './screens/Loans';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Drawer = createDrawerNavigator();
 const STORE_TOKEN_KEY = 'mytoken'
 
 export default function App() {
 
+  const [userData, setUserData] = useState({ user: { username: "", credits: "", shipCount: "", joinedAt: "" } });
   const [userToken, setUserToken] = useState('')
   const [active, setActive] = useState(false)
-
-  useEffect(() => {
-    
-  }, [userToken])
   
 
-  const handleAPi = async()=>{
-    const response =  await claimLoan("351cf3fe-da77-490f-9a6b-98ff5f17fd93", "STARTUP")
-    console.log({response})
-  }
+  // const handleAPi = async()=>{
+  //   const response =  await claimLoan("351cf3fe-da77-490f-9a6b-98ff5f17fd93", "STARTUP")
+  // }
 
-  useEffect(()=>{
-    handleAPi()
-  },[])
+  // useEffect(()=>{
+  //   handleAPi()
+  // },[])
 
   const getValueFor = async(key) => {
-    let result = await SecureStore.getItemAsync(key);
+    let result = await AsyncStorage.getItem(key);
+
+    if (!result) {
+      return ''
+    } else {
+      return result
+    }
   }
 
   const save = async (key, value) => {
-    await SecureStore.setItemAsync(key, value);
+    await AsyncStorage.setItem(key, value);
   }
 
+  useEffect(() => {
+    setActive(false)
+    const retrieveStoredToken = async () => {
+      const storedToken = await getValueFor(STORE_TOKEN_KEY);
+      if (storedToken) {
+        setUserToken(storedToken);
+      }
+      if (userToken !== '') {
+        save(STORE_TOKEN_KEY, userToken)
+      }
+    }
+    const fetchUserAccount = async () => {
+      try {
+        const data = await getUser(userToken)
+        setUserData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    retrieveStoredToken();
+    if (userToken) {
+      fetchUserAccount();
+    }
+    console.log("token => ", userToken);
+  }, [userToken, active])
 
-  // const logOut = () => {
-  //   setUserToken('')
-  // }
+  const logOut = () => {
+    save(STORE_TOKEN_KEY, '')
+    setUserToken('')
+    
+  }
 
   return (
     <RootSiblingParent>
@@ -57,7 +87,7 @@ export default function App() {
             ?
             <>
               <Drawer.Screen name='Login'>
-                {() => <Login userToken={userToken} setUserToken={setUserToken}/>}
+                {() => <Login userToken={userToken} setUserToken={setUserToken} save={save}/>}
               </Drawer.Screen>
               <Drawer.Screen name='Register'>
                 {() => <Register setUserToken={setUserToken}/>}
@@ -66,7 +96,7 @@ export default function App() {
             :
             <>
               <Drawer.Screen name='Profile'>
-                {() => <Profile userToken={userToken}/>}
+                {() => <Profile userToken={userToken} userData={userData}/>}
               </Drawer.Screen>
 
               <Drawer.Screen name='Loans'>
@@ -74,7 +104,7 @@ export default function App() {
               </Drawer.Screen>
 
               <Drawer.Screen name='LogOut'> 
-                {() => <Logout />}
+                {() => <Logout logOut={logOut}/>}
               </Drawer.Screen>
             </>
           }

@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { createUser } from "../services/SpaceTraders";
 
-const Register = ({userToken, setUserToken}) => {
+const Register = ({setUserToken}) => {
 
     const [userName, setUserName] = useState('');
 

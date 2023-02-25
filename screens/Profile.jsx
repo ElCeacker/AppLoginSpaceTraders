@@ -5,9 +5,7 @@ import { StyleSheet } from 'react-native';
 import { getUserProfile } from '../services/SpaceTraders'
 import Toast from "react-native-root-toast";
 
-const Profile = ({userToken}) => {
-    
-    const [profile, setProfile] = useState({user:{username: ''}});
+const userData = ({userToken, userData}) => {
 
     useEffect(() => {
         const fetchUserAccount = async () => {
@@ -30,11 +28,11 @@ const Profile = ({userToken}) => {
             <View style={{borderWidth: 5, height: '100%', borderColor: 'white'}}>
                 <View style={styles.edit}>
                     <Image style={styles.image} source={require('../assets/nave-espacial.png')}/>
-                    <Text style={{paddingTop: 35, fontSize: 30}}>{profile?.user?.username}</Text>
+                    <Text style={{paddingTop: 35, fontSize: 30}}>{userData?.user?.username}</Text>
                 </View>
                 <View style={styles.viewText}>
                     <View style={styles.showCredits}>
-                        <Text style={styles.textCredits}>{profile?.user?.credits} crd</Text>
+                        <Text style={styles.textCredits}>{userData?.user?.credits} crd</Text>
                     </View>
                     <View style={styles.datasText}>
                         <View style={{display: 'flex', flexDirection: 'column'}}>
@@ -43,10 +41,10 @@ const Profile = ({userToken}) => {
                         </View>
                         <View style={styles.datasNumber}>
                             <View style={styles.datasSeparations}>
-                                <Text style={styles.numberDatas}>{profile?.user?.shipCount}</Text>
+                                <Text style={styles.numberDatas}>{userData?.user?.shipCount}</Text>
                             </View>
                             <View style={styles.datasSeparations}>
-                                <Text style={styles.numberDatas}>{profile?.user?.structureCount}</Text>
+                                <Text style={styles.numberDatas}>{userData?.user?.structureCount}</Text>
                             </View>
                         </View>
 
@@ -126,4 +124,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Profile
+export default userData

@@ -6,7 +6,7 @@ const endpoints = {
     aviableLoan: `https://api.spacetraders.io/types/loans?token=`
 }
 
-export const getUserProfile = async (token) => {
+export const getUser = async (token) => {
     try {
         const response = await fetch(`${endpoints.userProfile}${token}`);
         const data = await response.json();

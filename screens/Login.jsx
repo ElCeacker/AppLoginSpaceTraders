@@ -3,17 +3,19 @@ import { Button, Text, TextInput, View } from "react-native"
 import { StyleSheet } from 'react-native';
 
 import Toast from 'react-native-root-toast';
-import { getUserProfile } from "../services/SpaceTraders";
+import { getUser } from "../services/SpaceTraders";
 
-const Login = ({userToken, setUserToken}) => {
+const Login = ({userToken, setUserToken, save}) => {
 
     const [textToken, setTextToken] = useState('');
+    const STORE_TOKEN_KEY = 'mytoken'
 
     const tokenHandler = async () => {
         if (textToken !== '') {
-            const userData = await getUserProfile(textToken)
+            const userData = await getUser(textToken)
             if ('user' in userData) {
                 setUserToken(textToken)
+                save(STORE_TOKEN_KEY, textToken)
                 return
             } 
 
